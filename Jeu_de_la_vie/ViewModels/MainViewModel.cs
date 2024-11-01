@@ -11,7 +11,8 @@ public class MainViewModel : IMainViewModel
     private readonly IGameGrid gameGrid;
     private readonly ITimerService timerService;
     private readonly IGameLogicService gameLogicService;
-
+    public int GridColumns => gameGrid.Columns;
+    public int GridRows => gameGrid.Rows;
     public ObservableCollection<ICellViewModel> Cells { get; private set; }
 
     public ICommand StartCommand { get; }

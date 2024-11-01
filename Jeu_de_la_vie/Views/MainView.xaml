@@ -1,14 +1,38 @@
-﻿<Window x:Class="Jeu_de_la_vie.Views.MainView"
+﻿<Window x:Class="Jeu_de_la_vie.Views.MainWindow"
         xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
         xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
-        xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
-        xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
-        Title="MainView"
-        Width="800"
-        Height="450"
-        WindowStartupLocation="CenterScreen"
-        mc:Ignorable="d">
-    <Grid HorizontalAlignment="Center" VerticalAlignment="Center">
-        <TextBlock Text="{Binding WelcomeMessage}" />
+        xmlns:vm="clr-namespace:Jeu_de_la_vie.ViewModels"
+        xmlns:views="clr-namespace:Jeu_de_la_vie.Views"
+        Title="Jeu de la Vie" Height="500" Width="500">
+    <Window.DataContext>
+        <vm:MainViewModel/>
+    </Window.DataContext>
+
+    <Grid>
+        <Grid.RowDefinitions>
+            <RowDefinition Height="Auto"/>
+            <RowDefinition Height="*"/>
+        </Grid.RowDefinitions>
+
+        <!-- Commandes de contrôle -->
+        <StackPanel Orientation="Horizontal" HorizontalAlignment="Center" Margin="10" Grid.Row="0">
+            <Button Content="Démarrer" Command="{Binding StartCommand}" Margin="5"/>
+            <Button Content="Arrêter" Command="{Binding StopCommand}" Margin="5"/>
+            <Button Content="Réinitialiser" Command="{Binding ResetCommand}" Margin="5"/>
+        </StackPanel>
+
+        <!-- Grille de cellules -->
+        <ItemsControl ItemsSource="{Binding Cells}" Grid.Row="1">
+            <ItemsControl.ItemsPanel>
+                <ItemsPanelTemplate>
+                    <UniformGrid Columns="{Binding GridColumns}" Rows="{Binding GridRows}"/>
+                </ItemsPanelTemplate>
+            </ItemsControl.ItemsPanel>
+            <ItemsControl.ItemTemplate>
+                <DataTemplate>
+                    <views:CellView />
+                </DataTemplate>
+            </ItemsControl.ItemTemplate>
+        </ItemsControl>
     </Grid>
 </Window>
