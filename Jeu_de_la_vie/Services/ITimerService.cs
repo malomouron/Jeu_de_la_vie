@@ -8,4 +8,5 @@ public interface ITimerService
     void Start();                            // Démarre le timer
     void Stop();                             // Arrête le timer
     int Interval { get; set; }               // Intervalle de temps entre chaque Tick
+    bool IsRunning { get; }                  // Indique si le timer est en cours d'exécution
 }

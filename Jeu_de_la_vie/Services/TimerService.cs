@@ -6,6 +6,7 @@ namespace Jeu_de_la_vie.Services;
 public class TimerService : ITimerService
 {
     private readonly Timer timer;
+    private bool _isRunning;
 
     public TimerService(int interval)
     {
@@ -21,7 +22,17 @@ public class TimerService : ITimerService
         set => timer.Interval = value;
     }
 
-    public void Start() => timer.Start();
+    public bool IsRunning => _isRunning;
 
-    public void Stop() => timer.Stop();
+    public void Start()
+    {
+        timer.Start();
+        _isRunning = true;
+    }
+
+    public void Stop()
+    {
+        timer.Stop();
+        _isRunning = false;
+    }
 }
