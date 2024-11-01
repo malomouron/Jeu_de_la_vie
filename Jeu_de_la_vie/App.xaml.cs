@@ -1,24 +1,15 @@
-﻿using System;
-using Jeu_de_la_vie.ViewModels;
-using Jeu_de_la_vie.Views;
+﻿using System.Windows;
+
 
 namespace Jeu_de_la_vie;
 
 /// <summary>
 /// Interaction logic for App.xaml
 /// </summary>
-public partial class App
+public partial class App : Application
 {
-    /// <summary>
-    /// Application Entry for Jeu_de_la_vie
-    /// </summary>
-    public App()
+    protected override void OnStartup(StartupEventArgs e)
     {
-        var view = new MainView
-        {
-            DataContext = Activator.CreateInstance<MainViewModel>()
-        };
-
-        view.Show();
+        base.OnStartup(e);
     }
 }
