@@ -31,28 +31,27 @@ public class GameGrid : IGameGrid
         }
     }
 
-    public ICell GetCell(int x, int y) => cells[x, y];
+    public ICell GetCell(int x, int y)
+    {
+        if (x < 0 || x >= Rows || y < 0 || y >= Columns)
+        {
+            throw new System.ArgumentOutOfRangeException();
+        }
+        return cells[x, y];
+    }
 
     public void UpdateGrid()
     {
-        var cellsToToggle = new List<ICell>();
-
         foreach (var cell in cells)
         {
             var neighbors = GetNeighbors(cell);
             gameLogicService.ApplyRules(cell, neighbors);
         }
-
-        // Met à jour l'état des cellules
-        foreach (var cell in cellsToToggle)
-        {
-            cell.ToggleState();
-        }
     }
 
     public IEnumerable<ICell> GetNeighbors(ICell cell)
     {
-        var neighbors = new List<ICell>();
+     var neighbors = new List<ICell>();
 
         for (int x = cell.X - 1; x <= cell.X + 1; x++)
         {
@@ -68,6 +67,6 @@ public class GameGrid : IGameGrid
             }
         }
 
-        return neighbors;
+        return neighbors;   
     }
 }

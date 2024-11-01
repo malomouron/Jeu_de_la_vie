@@ -2,46 +2,30 @@
 using System.Linq;
 using Jeu_de_la_vie.Models;
 
-namespace Jeu_de_la_vie.Services;
-
-public class GameLogicService : IGameLogicService
+namespace Jeu_de_la_vie.Services
 {
-    public void ApplyRules(ICell cell, IEnumerable<ICell> neighbors)
+    /// <summary>
+    /// Service de logique de jeu pour appliquer les règles du jeu de la vie.
+    /// </summary>
+    public class GameLogicService : IGameLogicService
     {
-        int aliveNeighbors = neighbors.Count(n => n.IsAlive);
-
-        if (cell.IsAlive && (aliveNeighbors < 2 || aliveNeighbors > 3))
+        /// <summary>
+        /// Applique les règles du jeu de la vie à une cellule donnée en fonction de ses voisins.
+        /// </summary>
+        /// <param name="cell">La cellule à laquelle appliquer les règles.</param>
+        /// <param name="neighbors">Les voisins de la cellule.</param>
+        public void ApplyRules(ICell cell, IEnumerable<ICell> neighbors)
         {
-            cell.ToggleState();
-        }
-        else if (!cell.IsAlive && aliveNeighbors == 3)
-        {
-            cell.ToggleState();
-        }
-    }
-
-    public List<ICell> GetCellsToToggle(IEnumerable<ICell> cells)
-    {
-        var cellsToToggle = new List<ICell>();
-
-        foreach (var cell in cells)
-        {
-            var neighbors = GetNeighbors(cell);
             int aliveNeighbors = neighbors.Count(n => n.IsAlive);
 
-            if ((cell.IsAlive && (aliveNeighbors < 2 || aliveNeighbors > 3)) ||
-                (!cell.IsAlive && aliveNeighbors == 3))
+            if (cell.IsAlive && (aliveNeighbors < 2 || aliveNeighbors > 3))
             {
-                cellsToToggle.Add(cell);
+                cell.ToggleState();
+            }
+            else if (!cell.IsAlive && aliveNeighbors == 3)
+            {
+                cell.ToggleState();
             }
         }
-
-        return cellsToToggle;
-    }
-
-    private IEnumerable<ICell> GetNeighbors(ICell cell)
-    {
-        // Supposons que cette méthode sera remplie dans GameGrid pour fournir les voisins
-        return new List<ICell>();
     }
 }

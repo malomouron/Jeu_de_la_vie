@@ -19,6 +19,23 @@ public class MainViewModel : IMainViewModel
     public ICommand StopCommand { get; }
     public ICommand ResetCommand { get; }
 
+    public MainViewModel()
+    {
+        // Default constructor for design-time data
+        gameGrid = new GameGrid(20, 20, new GameLogicService());
+        timerService = new TimerService(500);
+        gameLogicService = new GameLogicService();
+        
+        Cells = new ObservableCollection<ICellViewModel>();
+        InitializeCells();
+
+        StartCommand = new RelayCommand(_ => StartGame(), _ => !timerService.IsRunning);
+        StopCommand = new RelayCommand(_ => StopGame(), _ => timerService.IsRunning);
+        ResetCommand = new RelayCommand(_ => ResetGrid());
+
+        timerService.Tick += (s, e) => UpdateGrid();
+    }
+    
     public MainViewModel(IGameGrid gameGrid, ITimerService timerService, IGameLogicService gameLogicService)
     {
         this.gameGrid = gameGrid;
@@ -57,7 +74,7 @@ public class MainViewModel : IMainViewModel
         InitializeCells();
     }
 
-    private void UpdateGrid()
+    public void UpdateGrid()
     {
         gameGrid.UpdateGrid();
         foreach (var cellViewModel in Cells)

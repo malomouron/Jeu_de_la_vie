@@ -1,4 +1,6 @@
-﻿namespace Jeu_de_la_vie.Models;
+﻿using System;
+
+namespace Jeu_de_la_vie.Models;
 
 public class Cell : ICell
 {
@@ -11,6 +13,9 @@ public class Cell : ICell
         X = x;
         Y = y;
         IsAlive = isAlive;
+        Random random = new Random();
+        IsAlive = random.Next(0, 2) == 1;
+        
     }
 
     // Méthode pour inverser l'état de la cellule
