@@ -13,8 +13,8 @@ public partial class MainWindow : Window
         InitializeComponent();
 
         // Initialisation des services et du ViewModel
-        IGameGrid gameGrid = new GameGrid(20, 20, new GameLogicService());
-        ITimerService timerService = new TimerService(500); // Intervalle de 500 ms
+        IGameGrid gameGrid = new GameGrid(2, 2, new GameLogicService());
+        ITimerService timerService = new TimerService(200); // Intervalle de 500 ms
         IGameLogicService gameLogicService = new GameLogicService();
 
         // Création du ViewModel principal avec les services injectés

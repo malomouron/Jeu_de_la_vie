@@ -1,4 +1,5 @@
-﻿using System.Collections.Generic;
+﻿using System;
+using System.Collections.Generic;
 using Jeu_de_la_vie.Services;
 
 namespace Jeu_de_la_vie.Models;
@@ -45,28 +46,24 @@ public class GameGrid : IGameGrid
         foreach (var cell in cells)
         {
             var neighbors = GetNeighbors(cell);
-            gameLogicService.ApplyRules(cell, neighbors);
+            cells[cell.X, cell.Y] = gameLogicService.ApplyRules(cell, neighbors);
         }
     }
-
     public IEnumerable<ICell> GetNeighbors(ICell cell)
     {
-     var neighbors = new List<ICell>();
+        var neighbors = new List<ICell>();
 
-        for (int x = cell.X - 1; x <= cell.X + 1; x++)
+        for (int x = Math.Max(0, cell.X - 1); x <= Math.Min(Rows - 1, cell.X + 1); x++)
         {
-            for (int y = cell.Y - 1; y <= cell.Y + 1; y++)
+            for (int y = Math.Max(0, cell.Y - 1); y <= Math.Min(Columns - 1, cell.Y + 1); y++)
             {
-                if (x == cell.X && y == cell.Y)
-                    continue;
-
-                if (x >= 0 && x < Rows && y >= 0 && y < Columns)
+                if (x != cell.X || y != cell.Y)
                 {
-                    neighbors.Add(GetCell(x, y));
+                    neighbors.Add(cells[x, y]);
                 }
             }
         }
 
-        return neighbors;   
+        return neighbors;
     }
 }

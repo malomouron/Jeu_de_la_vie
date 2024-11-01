@@ -5,5 +5,5 @@ namespace Jeu_de_la_vie.Services;
 
 public interface IGameLogicService
 {
-    void ApplyRules(ICell cell, IEnumerable<ICell> neighbors); // Applique les règles de Conway à une cellule
+    ICell ApplyRules(ICell cell, IEnumerable<ICell> neighbors); // Applique les règles de Conway à une cellule
 }

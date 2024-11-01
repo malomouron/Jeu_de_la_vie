@@ -10,7 +10,6 @@ public class MainViewModel : IMainViewModel
 {
     private readonly IGameGrid gameGrid;
     private readonly ITimerService timerService;
-    private readonly IGameLogicService gameLogicService;
     public int GridColumns => gameGrid.Columns;
     public int GridRows => gameGrid.Rows;
     public ObservableCollection<ICellViewModel> Cells { get; private set; }
@@ -24,7 +23,6 @@ public class MainViewModel : IMainViewModel
         // Default constructor for design-time data
         gameGrid = new GameGrid(20, 20, new GameLogicService());
         timerService = new TimerService(500);
-        gameLogicService = new GameLogicService();
         
         Cells = new ObservableCollection<ICellViewModel>();
         InitializeCells();
@@ -40,7 +38,6 @@ public class MainViewModel : IMainViewModel
     {
         this.gameGrid = gameGrid;
         this.timerService = timerService;
-        this.gameLogicService = gameLogicService;
 
         Cells = new ObservableCollection<ICellViewModel>();
         InitializeCells();

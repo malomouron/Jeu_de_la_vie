@@ -3,9 +3,9 @@ using Jeu_de_la_vie.Models;
 
 namespace Jeu_de_la_vie.ViewModels;
 
-public class CellViewModel : ICellViewModel
+public class CellViewModel : INotifyPropertyChanged, ICellViewModel
 {
-    private readonly ICell cell;         // Modèle de la cellule
+    private readonly ICell cell;
 
     public CellViewModel(ICell cell)
     {
@@ -25,7 +25,11 @@ public class CellViewModel : ICellViewModel
         }
     }
 
-    public void ToggleState() => cell.ToggleState();
+    public void ToggleState()
+    {
+        cell.ToggleState();
+        OnPropertyChanged(nameof(IsAlive));
+    }
 
     public event PropertyChangedEventHandler PropertyChanged;
 
