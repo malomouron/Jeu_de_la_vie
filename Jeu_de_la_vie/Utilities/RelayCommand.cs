@@ -1,8 +1,9 @@
 ﻿using System;
+using System.Windows.Input;
 
 namespace Jeu_de_la_vie.Utilities;
 
-public class RelayCommand 
+public class RelayCommand : ICommand
 {
     private readonly Action<object> execute;
     private readonly Predicate<object> canExecute;
