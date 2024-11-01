@@ -1,22 +1,25 @@
 ﻿using System.Collections.Generic;
+using Jeu_de_la_vie.Services;
 
 namespace Jeu_de_la_vie.Models;
 
 public class GameGrid : IGameGrid
 {
-    private readonly ICell[,] cells;            // Grille de cellules
-    public int Rows { get; }                    // Nombre de lignes dans la grille
-    public int Columns { get; }                 // Nombre de colonnes dans la grille
+    private readonly ICell[,] cells;
+    private readonly IGameLogicService gameLogicService;
 
-    public GameGrid(int rows, int columns)
+    public int Rows { get; }
+    public int Columns { get; }
+
+    public GameGrid(int rows, int columns, IGameLogicService gameLogicService)
     {
         Rows = rows;
         Columns = columns;
         cells = new ICell[rows, columns];
+        this.gameLogicService = gameLogicService;
         InitializeGrid();
     }
 
-    // Initialisation de la grille avec des cellules mortes par défaut
     public void InitializeGrid()
     {
         for (int x = 0; x < Rows; x++)
@@ -28,35 +31,25 @@ public class GameGrid : IGameGrid
         }
     }
 
-    // Récupère une cellule à une position donnée
     public ICell GetCell(int x, int y) => cells[x, y];
 
-    // Mise à jour de la grille pour la génération suivante
     public void UpdateGrid()
     {
         var cellsToToggle = new List<ICell>();
 
         foreach (var cell in cells)
         {
-            var aliveNeighbors = CountAliveNeighbors(cell);
-            if (cell.IsAlive && (aliveNeighbors < 2 || aliveNeighbors > 3))
-            {
-                cellsToToggle.Add(cell);
-            }
-            else if (!cell.IsAlive && aliveNeighbors == 3)
-            {
-                cellsToToggle.Add(cell);
-            }
+            var neighbors = GetNeighbors(cell);
+            gameLogicService.ApplyRules(cell, neighbors);
         }
 
-        // Met à jour l'état des cellules en fonction de la règle de Conway
+        // Met à jour l'état des cellules
         foreach (var cell in cellsToToggle)
         {
             cell.ToggleState();
         }
     }
 
-    // Obtient les voisins d'une cellule
     public IEnumerable<ICell> GetNeighbors(ICell cell)
     {
         var neighbors = new List<ICell>();
@@ -76,19 +69,5 @@ public class GameGrid : IGameGrid
         }
 
         return neighbors;
-    }
-
-    // Compte le nombre de voisins vivants d'une cellule
-    private int CountAliveNeighbors(ICell cell)
-    {
-        int count = 0;
-        foreach (var neighbor in GetNeighbors(cell))
-        {
-            if (neighbor.IsAlive)
-            {
-                count++;
-            }
-        }
-        return count;
     }
 }
